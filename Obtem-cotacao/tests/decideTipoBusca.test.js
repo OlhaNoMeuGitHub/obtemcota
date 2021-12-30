@@ -4,7 +4,7 @@ describe('Decide tipo de buscas', function () {
     it('Valida tipo busca por data', async () => {
         let event = {
             "tipoBusca":"historico",
-            "symbols" : ["ITUB4.SA",'PETR4.SA'],
+            "symbols" : ["ITUB4.SA"],
             "from" : "2021-01-01",
             "to" : "2021-01-10"
             
