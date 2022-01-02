@@ -17,7 +17,7 @@ describe('vailida envio handler', function () {
 
         
 
-        let response = await app.lambdaHandler(event, context)
+        let response = await app.lambdaHandler(event)
         let strinJson = JSON.stringify(response);
         expect(strinJson.includes("ITUB4")).toBe(true);
         expect(strinJson.includes("PETR4")).toBe(true);
