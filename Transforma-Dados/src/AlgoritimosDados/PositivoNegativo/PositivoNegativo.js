@@ -3,34 +3,34 @@ function execute(dadosbolsa){
 }
 
 function transformaEmPositivoNegativo(dadosbolsa) {
-  let Valoresordenados = dadosbolsa.sort(ordenaporData);
-  let result = geraPositivoeNegativo(Valoresordenados);
+  dadosbolsa.dadosCotacoes = dadosbolsa.dadosCotacoes.sort(ordenaporData);
+  let result = geraPositivoeNegativo(dadosbolsa);
   return result;
 }
 
 function geraPositivoeNegativo(dadosbolsa) {
-  let QtdPositivoSeguidos = 0;
-  let QtdNegativoSeguidos = 0;
+  let QtdPositivoSeguidos = 1;
+  let QtdNegativoSeguidos = 1;
   let vclose = "";
 
   //vai até pnultimo valor pois não temos o proximo dia
-  for (var i = 1; i < dadosbolsa.length ; i++) {
-    if (dadosbolsa[i].close > dadosbolsa[i-1].close) {
-      QtdNegativoSeguidos = 0;
+  for (var i = 1; i < dadosbolsa.dadosCotacoes.length ; i++) {
+    if (dadosbolsa.dadosCotacoes[i].close > dadosbolsa.dadosCotacoes[i-1].close) {
+      QtdNegativoSeguidos = 1;
       QtdPositivoSeguidos = QtdPositivoSeguidos + 1;
       vclose = "P"
     } else {
       QtdNegativoSeguidos = QtdNegativoSeguidos + 1;
-      QtdPositivoSeguidos = 0;
+      QtdPositivoSeguidos = 1;
       vclose = "N"
     }
-    dadosbolsa[i].vclose = vclose
-    dadosbolsa[i].QtdNegativoSeguidos = QtdNegativoSeguidos,
-    dadosbolsa[i].QtdPositivoSeguidos = QtdPositivoSeguidos
+    dadosbolsa.dadosCotacoes[i].vclose = vclose
+    dadosbolsa.dadosCotacoes[i].QtdNegativoSeguidos = QtdNegativoSeguidos,
+    dadosbolsa.dadosCotacoes[i].QtdPositivoSeguidos = QtdPositivoSeguidos
   }
-  dadosbolsa[0].vclose = ""
-  dadosbolsa[0].QtdNegativoSeguidos = 0,
-  dadosbolsa[0].QtdPositivoSeguidos = 0
+  dadosbolsa.dadosCotacoes[0].vclose = ""
+  dadosbolsa.dadosCotacoes[0].QtdNegativoSeguidos = 1,
+  dadosbolsa.dadosCotacoes[0].QtdPositivoSeguidos = 1
 
   return dadosbolsa;
 }
