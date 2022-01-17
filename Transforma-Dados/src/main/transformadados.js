@@ -1,6 +1,8 @@
 const positivoNegativo = require("../AlgoritimosDados/PositivoNegativo/PositivoNegativo");
 const media = require("../AlgoritimosDados/Estatisticos/media");
 const maior = require("../AlgoritimosDados/Estatisticos/maior");
+const RSI = require("../AlgoritimosDados/SerieTemporal/rsi");
+const mediaMovel = require("../AlgoritimosDados/SerieTemporal/mediaMovel");
 
 
 const buscaDados = require("./buscadados");
@@ -29,6 +31,8 @@ function execute(type, dados) {
     case 'PositivoNegativo':{return positivoNegativo.execute(dados);}
     case 'Media':{return media.execute(dados,...type.parans) }
     case 'Maior':{return maior.execute(dados,...type.parans) }
+    case 'RSI':{return RSI.execute(dados,...type.parans) }
+    case 'MediaMovel':{return mediaMovel.execute(dados,...type.parans) }
 
   }
 

@@ -25,6 +25,8 @@
     "testURL": "http://localhost/"
   },
   "dependencies": {
-    "aws-sdk": "^2.1050.0"
+    "aws-sdk": "^2.1050.0",
+    "technicalindicators": "^3.1.0",
+    "yahoo-finance2": "^2.1.0"
   }
 }

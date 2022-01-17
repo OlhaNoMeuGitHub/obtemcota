@@ -1,23 +1,26 @@
-function execute(dadosbolsa,paranMedia){
-    return CriaMetricaMediaMovel(dadosbolsa,paranMedia)
+function execute(dadosbolsa,paranMedia,numLancamentos){
+    return CriaMetricaMediaMovel(dadosbolsa,paranMedia,numLancamentos)
   }
 
 function CriaMetricaMediaMovel(dadosbolsa,paranMedia,numLancamentos){
 
-
-    for (var i = numLancamentos; i < dadosbolsa.dadosCotacoes.length ; i++) {
-
-
+    let primeirosValore = dadosbolsa.dadosCotacoes.slice(0, numLancamentos)
+    let mediaPrimeira = CalculaMedia(primeirosValore,"close")
+    let mediaMovel = mediaPrimeira;
+    for (var i = 0; i < numLancamentos-1 ; i++) {
+        dadosbolsa.dadosCotacoes[i]["mediaMovel"+paranMedia+numLancamentos]=0;
     }
-    let resultCalcMedia = CalculaMedia(dadosbolsa.dadosCotacoes,paranMedia);
-    dadosbolsa.MetricasGerais["media"+paranMedia] = resultCalcMedia
+    for (var i = numLancamentos; i < dadosbolsa.dadosCotacoes.length ; i++) {
+        mediaMovel = CalculaProximaMediaMovel(dadosbolsa.dadosCotacoes,i,numLancamentos,mediaMovel,paranMedia);
+        dadosbolsa.dadosCotacoes[i]["mediaMovel"+paranMedia+numLancamentos] = mediaMovel
+    }
     return dadosbolsa
 
 
 }
 
 function CalculaProximaMediaMovel(arr,indice,numLancamentos,mediaMovelAnterior,paranMedia){
-    let primeiroValor = arr[numLancamentos - indice][paranMedia];
+    let primeiroValor = arr[indice - numLancamentos][paranMedia];
     let valorAtual = arr[indice][paranMedia];
     let novaMediaMovel = ((mediaMovelAnterior*numLancamentos) - primeiroValor + valorAtual)/numLancamentos;
     return novaMediaMovel;
@@ -32,4 +35,4 @@ function CalculaMedia(arr,paranMedia){
 
 
 
-module.exports = { execute,CalculaMedia};
+module.exports = { execute,CalculaMedia,CalculaProximaMediaMovel,CriaMetricaMediaMovel};

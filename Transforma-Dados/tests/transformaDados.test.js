@@ -22,13 +22,15 @@ describe("vailida transforma dados", function () {
       tipoBusca: "historico",
       symbols: ["ITUB4.SA", "PETR4.SA"],
       from: "2021-01-01",
-      to: "2021-02-10",
+      to: "2021-03-10",
     };
     arrAlgos =[{algo:"PositivoNegativo"},
     {algo:"Maior",parans:["QtdNegativoSeguidos"]},
     {algo:"Maior",parans:["close"]},
     {algo:"Media",parans:["QtdNegativoSeguidos"]},
     {algo:"Media",parans:["close"]},
+    {algo:"RSI",parans:["close",14]},
+    {algo:"MediaMovel",parans:["close",10]},
   
   ];
 
