@@ -7,6 +7,7 @@
   "author": "SAM CLI",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.1087.0",
     "axios": "^0.21.1",
     "rewire": "^5.0.0",
     "yahoo-finance": "^0.3.7",

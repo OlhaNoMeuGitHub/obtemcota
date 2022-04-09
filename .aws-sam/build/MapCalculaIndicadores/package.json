@@ -1,0 +1,32 @@
+{
+  "name": "transforma-dados",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OlhaNoMeuGitHub/obtemcota.git"
+  },
+  "author": "Rafael Barriento",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OlhaNoMeuGitHub/obtemcota/issues"
+  },
+  "homepage": "https://github.com/OlhaNoMeuGitHub/obtemcota#readme",
+  "devDependencies": {
+    "babel-plugin-rewire": "^1.2.0",
+    "jest": "^22.4.4"
+  },
+  "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1050.0",
+    "technicalindicators": "^3.1.0",
+    "yahoo-finance2": "^2.1.0"
+  }
+}

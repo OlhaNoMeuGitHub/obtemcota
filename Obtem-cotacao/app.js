@@ -2,6 +2,9 @@
 // const url = 'http://checkip.amazonaws.com/';
 let response;
 const tipobusca = require('./src/decideTipoBusca');
+const uploads3 = require('./src/uploadArquivo');
+const  StepFunctionObj = require('./src/startStepFunction');
+
 
 /**
  *
@@ -18,18 +21,17 @@ const tipobusca = require('./src/decideTipoBusca');
 exports.lambdaHandler = async (event, context) => {
     try {
         console.log(event)
-        let result = await tipobusca.chamabusca(event)
+        let resultCotacoes = await tipobusca.chamabusca(event)
+        let resultMontado = tipobusca.montaRetorno(resultCotacoes)
+        let objS3 = await uploads3.uploadS3(resultMontado)
+        eventStep = {
+            arquivo: objS3.Key,
+            qtdMap: 10
+        }
+        await StepFunctionObj.startStepFunction(eventStep)
 
-        return result
-
-        // const ret = await axios(url);
-        // response = {
-        //     'statusCode': 200,
-        //     'body': JSON.stringify({
-        //         message: 'hello world',
-        //         // location: ret.data.trim()
-        //     })
-        // }
+        return resultMontado
+        
     } catch (err) {
         console.log(err);
         return err;

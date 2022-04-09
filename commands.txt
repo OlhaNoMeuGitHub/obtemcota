@@ -1,0 +1,89 @@
+docker run \
+  -p 9000:9000 \
+  -p 9001:9001 \
+  -e "MINIO_ROOT_USER=AKIAVUGMUKIGD7N2QOVR" \
+  -e "MINIO_ROOT_PASSWORD=7Wx1lEJTelGv5KELa7AocyCXNCLAbFgVnpx4kgGz" \
+  --name meus3 \
+  quay.io/minio/minio server /data --console-address ":9001"
+
+
+docker run -p 8083:8083 amazon/aws-stepfunctions-local
+docker run -p 8083:8083 --env-file env-docker.txt amazon/aws-stepfunctions-local
+
+sam local start-lambda --host 127.0.0.1 -p 3001
+sam local start-lambda --host 127.0.0.1 -p 3001
+
+
+
+aws stepfunctions --endpoint http://localhost:8083 create-state-machine --definition "{\
+  \"Comment\": \"A Hello World example of the Amazon States Language using an AWS Lambda Local function\",\
+  \"StartAt\": \"HelloWorld\",\
+  \"States\": {\
+    \"HelloWorld\": {\
+      \"Type\": \"Task\",\
+      \"Resource\": \"arn:aws:lambda:us-east-1:123456789012:function:HelloWorldFunction\",\
+      \"End\": true\
+    }\
+  }\
+}\
+}}" --name "HelloWorld" --role-arn "arn:aws:iam::123456789012:role/DummyRole"
+
+
+aws stepfunctions --endpoint http://localhost:8083 start-execution --state-machine arn:aws:states:us-east-1:123456789012:stateMachine:HelloWorld --name test
+
+aws stepfunctions --endpoint http://localhost:8083 describe-execution --execution-arn arn:aws:states:us-east-1:123456789012:execution:HelloWorld:test
+
+
+
+
+AWS_ACCESS_KEY_ID=AKIAVUGMUKIGD7N2QOVR
+AWS_SECRET_ACCESS_KEY=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
+LAMBDA_ENDPOINT=http://host.docker.internal:3001
+
+
+
+aws stepfunctions create-state-machine --endpoint http://localhost:8083 --definition file://StateMachine/stock_trader.asl.json --name "StepDemo" --role-arn "arn:aws:iam::012345678901:role/DummyRole"
+
+
+
+aws stepfunctions --endpoint http://localhost:8083 create-state-machine --definition "{\
+  \"Comment\": \"A Hello World example of the Amazon States Language using an AWS Lambda Local function\",\
+  \"StartAt\": \"HelloWorld\",\
+  \"States\": {\
+    \"HelloWorld\": {\
+      \"Type\": \"Task\",\
+      \"Resource\": \"arn:aws:lambda:us-east-1:386976207372:function:HelloWorldFunction\",\
+      \"End\": true\
+    }\
+  }\
+}\
+}}" --name "Hello" --role-arn "arn:aws:iam::386976207372:role/DummyRole"
+
+
+aws stepfunctions --endpoint http://localhost:8083 start-execution --state-machine arn:aws:states:us-east-1:123456789012:stateMachine:HelloWorld --name test
+
+aws stepfunctions --endpoint http://localhost:8083 describe-execution --execution-arn arn:aws:states:us-east-1:123456789012:execution:HelloWorld:test
+
+aws stepfunctions --endpoint http://localhost:8083  list-state-machines
+
+
+
+passo 1
+sam local start-lambda --host 127.0.0.1 -p 3001
+
+passo 2
+docker run -p 8083:8083 --env-file env-docker.txt amazon/aws-stepfunctions-local --name StepFunction
+
+passo 3
+aws stepfunctions create-state-machine --endpoint http://localhost:8083 --definition file://StateMachine/statemachineMap.asl.json --name "machineMap" --role-arn "arn:aws:iam::012345678901:role/DummyRole"
+
+passo 4
+aws stepfunctions --endpoint http://localhost:8083 start-execution --state-machine arn:aws:states:us-east-1:123456789012:stateMachine:StepDemo --name test --input statemachine/event/CotacoesMetricas.json
+
+
+aws stepfunctions delete-state-machine --endpoint http://localhost:8083  --state-machine-arn "arn:aws:states:us-east-1:123456789012:stateMachine:machineMapTest"
+
+
+aws stepfunctions create-state-machine --endpoint http://localhost:8083 --definition file://StateMachine/statemachineMapItarator.asl.json --name "machineMap" --role-arn "arn:aws:iam::012345678901:role/DummyRole"
+
+aws stepfunctions create-state-machine --endpoint http://localhost:8083 --definition file://StateMachine/testMachine/StatesMachineTest/statemachineMapItarator.asl.json --name "machineMapTest" --role-arn "arn:aws:iam::012345678901:role/DummyRole"

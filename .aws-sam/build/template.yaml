@@ -9,28 +9,37 @@ Globals:
   Function:
     Timeout: 30
 Resources:
-  ObtemCotacaoFunction:
+  StockTradingStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      DefinitionUri: ..\..\statemachine\stock_trader.asl.json
+      Policies:
+      - LambdaInvokePolicy:
+          FunctionName:
+            Ref: SplitCotacoes
+      - LambdaInvokePolicy:
+          FunctionName:
+            Ref: MapCalculaIndicadores
+  SplitCotacoes:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ObtemCotacaoFunction
+      CodeUri: SplitCotacoes
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Architectures:
       - x86_64
-  TransformaPositivoNegativoFunction:
+    Metadata:
+      SamResourceId: SplitCotacoes
+  MapCalculaIndicadores:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: TransformaPositivoNegativoFunction
+      CodeUri: MapCalculaIndicadores
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Architectures:
       - x86_64
-      Events:
-        HelloWorld:
-          Type: Api
-          Properties:
-            Path: /hello
-            Method: get
+    Metadata:
+      SamResourceId: MapCalculaIndicadores
 Outputs:
   ObtemCotacaoFunction:
     Description: Hello World Lambda Function ARN

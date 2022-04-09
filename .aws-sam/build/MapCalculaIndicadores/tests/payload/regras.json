@@ -1,0 +1,47 @@
+[ {
+    "condicoes":[{"condicao": {
+        "TipoDado":"MetricasCotacoes",
+        "symbol":"ITUB4.SA",
+        "nomeParametro":"RSIclose14",
+        "operador":"Maior",
+        "valor":15
+    }},{"condicao": {
+        "TipoDado":"MetricasCotacoes",
+        "symbol":"ITUB4.SA",
+        "nomeParametro":"mediaMovelclose10",
+        "operador":"menor",
+        "valor":100
+    }}],
+    "nomeRegra":"RSI 14 maior que 15 e Media Movel menor que 100"
+  
+},
+{
+  "condicoes":[{"condicao": {
+      "TipoDado":"MetricasCotacoes",
+      "symbol":"ITUB4.SA",
+      "nomeParametro":"RSIclose14",
+      "operador":"Maior",
+      "valor":15
+  }},{"condicao": {
+      "TipoDado":"MetricasCotacoes",
+      "symbol":"ITUB4.SA",
+      "nomeParametro":"mediaMovelclose10",
+      "operador":"menor",
+      "valor":5
+  }}],
+  "nomeRegra":"RSI 14 maior que 15 e Media Movel menor que 5"
+
+},
+{
+"condicoes":[{"condicao": {
+    "TipoDado":"MetricasCotacoes",
+    "symbol":"ITUB4.SA",
+    "nomeParametro":"RSIclose14",
+    "operador":"Maior",
+    "valor":30
+}}],
+"nomeRegra":"RSI14 maior que 30 "
+
+}
+
+]

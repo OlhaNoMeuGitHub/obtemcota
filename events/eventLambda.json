@@ -1,0 +1,110 @@
+{
+  "dadosTransformar": {
+    "dadosSymbols": {
+      "tipoBusca": "dias",
+      "symbols": [
+        "ITUB4.SA",
+        "PETR4.SA",
+        "BOVA11.SA",
+        "ABEV3.SA",
+        "BBAS3.SA",
+        "BBDC3.SA",
+        "CIEL3.SA",
+        "PETR3.SA",
+        "ITSA4.SA"
+      ],
+      "dias": "160"
+    },
+    "arrAlgos": [
+      { "algo": "PositivoNegativo" },
+      { "algo": "Maior", "parans": ["QtdNegativoSeguidos"] },
+      { "algo": "Maior", "parans": ["close"] },
+      { "algo": "Media", "parans": ["QtdNegativoSeguidos"] },
+      { "algo": "Media", "parans": ["close"] },
+      { "algo": "RSI", "parans": ["close", 14] },
+      { "algo": "MediaMovel", "parans": ["close", 10] }
+    ]
+  },
+  "regras": [
+    {
+      "condicoes": [
+        {
+          "condicao": {"TipoDado": "MetricasCotacoes","symbol": "PETR4.SA","nomeParametro": "RSIclose14","operador": "Menor","valor": 60}
+        }
+      ],
+      "nomeRegra": "RSI 14 menor que 60 PETR4"
+    },
+    {
+      "condicoes": [
+        {
+          "condicao": {"TipoDado": "MetricasCotacoes","symbol": "ITUB4.SA","nomeParametro": "RSIclose14","operador": "Menor","valor": 60}
+        }
+      ],
+      "nomeRegra": "RSI 14 menor que 60 ITUB4"
+    },
+    {
+      "condicoes": [
+        {
+          "condicao": {"TipoDado": "MetricasCotacoes","symbol": "BOVA11.SA","nomeParametro": "RSIclose14","operador": "Menor","valor": 60}
+        }
+      ],
+      "nomeRegra": "RSI 14 menor que 60 BOVA11"
+    },
+    {
+      "condicoes": [
+        {
+          "condicao": {"TipoDado": "MetricasCotacoes","symbol": "ABEV3.SA","nomeParametro": "RSIclose14","operador": "Menor","valor": 60}
+        }
+      ],
+      "nomeRegra": "RSI 14 menor que 60 ABEV3"
+    },
+    {
+      "condicoes": [
+        {
+          "condicao": {"TipoDado": "MetricasCotacoes","symbol": "BBAS3.SA","nomeParametro": "RSIclose14","operador": "Menor","valor": 60}
+        }
+      ],
+      "nomeRegra": "RSI 14 menor que 60 BBAS3"
+    },
+    {
+      "condicoes": [
+        {
+          "condicao": {"TipoDado": "MetricasCotacoes","symbol": "BBDC3.SA","nomeParametro": "RSIclose14","operador": "Menor","valor": 60}
+        }
+      ],
+      "nomeRegra": "RSI 14 menor que 60 BBDC3"
+    },
+    {
+      "condicoes": [
+        {
+          "condicao": {"TipoDado": "MetricasCotacoes","symbol": "CIEL3.SA","nomeParametro": "RSIclose14","operador": "Menor","valor": 60}
+        }
+      ],
+      "nomeRegra": "RSI 14 menor que 60 Cielo"
+    },
+    {
+      "condicoes": [
+        {
+          "condicao": {"TipoDado": "MetricasCotacoes","symbol": "PETR3.SA","nomeParametro": "RSIclose14","operador": "Menor","valor": 60}
+        }
+      ],
+      "nomeRegra": "RSI 14 menor que 60 PETR3"
+    },
+    {
+      "condicoes": [
+        {
+          "condicao": {"TipoDado": "MetricasCotacoes","symbol": "ITSA4.SA","nomeParametro": "RSIclose14","operador": "Menor","valor": 60}
+        }
+      ],
+      "nomeRegra": "RSI 14 menor que 60 ITSA4"
+    },
+    {
+      "condicoes": [
+        {
+          "condicao": {"TipoDado": "MetricasCotacoes","symbol": "ITSA4.SA","nomeParametro": "RSIclose14","operador": "Menor","valor": "MediaMovel10"}
+        }
+      ],
+      "nomeRegra": "RSI 14 menor que a MediaMovel10 ITSA4"
+    }
+  ]
+}

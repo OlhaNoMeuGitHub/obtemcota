@@ -26,7 +26,7 @@ async function GetTodasCotacoesHistorico(symbols,from,to=null ) {
   for (let symbol of symbols) {
     let resultYahoo = await GetValoresHistorico(symbol,from,to)
     resultYahoo.map((v) =>{v.symbol = symbol},symbol)
-    arrayCotacoes = InsereSymbol(arrayCotacoes,resultYahoo)
+    arrayCotacoes = InsereSymbol(arrayCotacoes,resultYahoo,symbol)
   }
   return arrayCotacoes;
 
@@ -37,13 +37,14 @@ async function GetTodasCotacoesDias(symbols,dias) {
   for (let symbol of symbols) {
     let resultYahoo = await GetValoresDiasAnteriores(symbol,dias)
     resultYahoo.map((v) =>{v.symbol = symbol},symbol)
-    arrayCotacoes.push(...resultYahoo)  
+    arrayCotacoes = InsereSymbol(arrayCotacoes,resultYahoo,symbol)  
   }
   return arrayCotacoes;
 
 }
 
-function InsereSymbol(arrayCotacoes,novoSymbol){
+function InsereSymbol(arrayCotacoes,novoSymbol,symbol){
+     novoSymbol.symbol = symbol
      arrayCotacoes.push(novoSymbol) 
      return arrayCotacoes
 }

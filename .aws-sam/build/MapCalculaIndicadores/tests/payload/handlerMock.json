@@ -1,0 +1,64 @@
+{
+    "dadosTransformar":{
+        "dadosSymbols": {
+          "tipoBusca": "dias",
+          "symbols": ["ITUB4.SA", "PETR4.SA"],
+          "dias": "180"
+        },
+        "arrAlgos": [
+          { "algo": "PositivoNegativo" },
+          { "algo": "Maior", "parans": ["QtdNegativoSeguidos"] },
+          { "algo": "Maior", "parans": ["close"] },
+          { "algo": "Media", "parans": ["QtdNegativoSeguidos"] },
+          { "algo": "Media", "parans": ["close"] },
+          { "algo": "RSI", "parans": ["close", 14] },
+          { "algo": "MediaMovel", "parans": ["close", 10] }
+        ]
+      },
+    "regras":[ {
+    "condicoes":[{"condicao": {
+        "TipoDado":"MetricasCotacoes",
+        "symbol":"ITUB4.SA",
+        "nomeParametro":"RSIclose14",
+        "operador":"Maior",
+        "valor":15
+    }},{"condicao": {
+        "TipoDado":"MetricasCotacoes",
+        "symbol":"ITUB4.SA",
+        "nomeParametro":"mediaMovelclose10",
+        "operador":"menor",
+        "valor":100
+    }}],
+    "nomeRegra":"RSI 14 maior que 15 e Media Movel menor que 100"
+  
+},
+{
+  "condicoes":[{"condicao": {
+      "TipoDado":"MetricasCotacoes",
+      "symbol":"ITUB4.SA",
+      "nomeParametro":"RSIclose14",
+      "operador":"Maior",
+      "valor":15
+  }},{"condicao": {
+      "TipoDado":"MetricasCotacoes",
+      "symbol":"ITUB4.SA",
+      "nomeParametro":"mediaMovelclose10",
+      "operador":"menor",
+      "valor":5
+  }}],
+  "nomeRegra":"RSI 14 maior que 15 e Media Movel menor que 5"
+
+},
+{
+"condicoes":[{"condicao": {
+    "TipoDado":"MetricasCotacoes",
+    "symbol":"ITUB4.SA",
+    "nomeParametro":"RSIclose14",
+    "operador":"Maior",
+    "valor":30
+}}],
+"nomeRegra":"RSI14 maior que 30 "
+
+}
+
+]}

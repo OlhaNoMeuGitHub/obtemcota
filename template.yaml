@@ -11,28 +11,34 @@ Globals:
     Timeout: 30
 
 Resources:
-  ObtemCotacaoFunction:
+
+  StockTradingStateMachine:
+    Type: AWS::Serverless::StateMachine # More info about State Machine Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-statemachine.html
+    Properties:
+      DefinitionUri: statemachine/stock_trader.asl.json
+      Policies: # Find out more about SAM policy templates: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+        - LambdaInvokePolicy:
+            FunctionName: !Ref SplitCotacoes
+        - LambdaInvokePolicy:
+            FunctionName: !Ref MapCalculaIndicadores
+  SplitCotacoes:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: Obtem-Cotacao/
+      CodeUri: SplitCotacoes/
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
-  TransformaPositivoNegativoFunction:
+
+  MapCalculaIndicadores:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: Transforma-Dados/
+      CodeUri: MapCalculaIndicadores/
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
-      Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /hello
-            Method: get
+
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
