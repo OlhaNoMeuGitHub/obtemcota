@@ -1,8 +1,8 @@
 docker run \
   -p 9000:9000 \
   -p 9001:9001 \
-  -e "MINIO_ROOT_USER=AKIAVUGMUKIGD7N2QOVR" \
-  -e "MINIO_ROOT_PASSWORD=7Wx1lEJTelGv5KELa7AocyCXNCLAbFgVnpx4kgGz" \
+  -e "MINIO_ROOT_USER=teste" \
+  -e "MINIO_ROOT_PASSWORD=teste" \
   --name meus3 \
   quay.io/minio/minio server /data --console-address ":9001"
 
@@ -36,8 +36,8 @@ aws stepfunctions --endpoint http://localhost:8083 describe-execution --executio
 
 
 
-AWS_ACCESS_KEY_ID=AKIAVUGMUKIGD7N2QOVR
-AWS_SECRET_ACCESS_KEY=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
+AWS_ACCESS_KEY_ID=teste
+AWS_SECRET_ACCESS_KEY=teste
 LAMBDA_ENDPOINT=http://host.docker.internal:3001
 
 
@@ -87,3 +87,10 @@ aws stepfunctions delete-state-machine --endpoint http://localhost:8083  --state
 aws stepfunctions create-state-machine --endpoint http://localhost:8083 --definition file://StateMachine/statemachineMapItarator.asl.json --name "machineMap" --role-arn "arn:aws:iam::012345678901:role/DummyRole"
 
 aws stepfunctions create-state-machine --endpoint http://localhost:8083 --definition file://StateMachine/testMachine/StatesMachineTest/statemachineMapItarator.asl.json --name "machineMapTest" --role-arn "arn:aws:iam::012345678901:role/DummyRole"
+
+
+aws stepfunctions describe-state-machine-for-execution --endpoint http://localhost:8083 --execution-arn "arn:aws:states:us-east-1:123456789012:execution:machineMap:12ba5d2f-f813-4fd5-accc-1fdab2277abd" 
+
+aws stepfunctions describe-execution --endpoint http://localhost:8083 --execution-arn "arn:aws:states:us-east-1:123456789012:execution:machineMap:12ba5d2f-f813-4fd5-accc-1fdab2277abd" 
+
+aws stepfunctions list-activities --endpoint http://localhost:8083

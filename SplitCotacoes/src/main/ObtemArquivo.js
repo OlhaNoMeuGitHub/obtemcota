@@ -5,8 +5,8 @@ AWS.config.update({ region: "us-east-1" });
 
 const s3Aws = new AWS.S3({
   endpoint: "http://host.docker.internal:9000",
-  accessKeyId: "AKIAVUGMUKIGD7N2QOVR",
-  secretAccessKey: "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",
+  accessKeyId: "teste",
+  secretAccessKey: "teste",
   sslEnabled: false,
   s3ForcePathStyle: true,
   signatureVersion: 'v4'

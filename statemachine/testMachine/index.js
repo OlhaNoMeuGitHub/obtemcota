@@ -3,9 +3,9 @@ var AWS = require("aws-sdk");
 AWS.config.update({ region: "us-east-1" });
 
 
-async function lambdaHandler(inputPayload){
+async function lambdaHandler(inputPayload, stateARN= "arn:aws:states:us-east-1:123456789012:stateMachine:machineMapTest"){
     var params = {
-        stateMachineArn: 'arn:aws:states:us-east-1:123456789012:stateMachine:machineMapTest', /* required */
+        stateMachineArn: stateARN, /* required */
         input:JSON.stringify(inputPayload),
       };
 
@@ -20,6 +20,7 @@ async function lambdaHandler(inputPayload){
 
     );
     let result = await stepfunctions.startExecution(params).promise();
+    console.log(result);
     return result;
 
 }

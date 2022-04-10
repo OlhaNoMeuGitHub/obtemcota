@@ -4,7 +4,7 @@ var AWS = require("aws-sdk");
 AWS.config.update({ region: "us-east-1" });
 
 const s3Aws = new AWS.S3({
-  endpoint: "http://127.0.0.1:9000",
+  endpoint: "http://host.docker.internal:9000",
   accessKeyId: "teste",
   secretAccessKey: "teste",
   sslEnabled: false,
@@ -17,14 +17,19 @@ async function uploadS3(objUpload, s3SDK = s3Aws) {
   var date = Date.now();
   keyfile = date + ".json"
   const params = {
-    Bucket: "teste",
+    Bucket: "mapbucket",
     Key: keyfile,
     Body: jsonString,
+  };
+
+  let result = {
+    Bucket: "mapbucket",
+    Key: keyfile
   };
   try {
     const stored = await s3SDK.upload(params).promise();
     console.log(stored);
-    return params
+    return result
   } catch (err) {
     console.log(err);
   }

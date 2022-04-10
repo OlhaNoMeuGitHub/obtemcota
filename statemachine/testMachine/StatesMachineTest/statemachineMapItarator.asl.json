@@ -7,6 +7,7 @@
             "Type": "Map",
             "InputPath": "$",
             "ItemsPath": "$",
+            "ResultPath": "$",
             "MaxConcurrency": 5,
             "Iterator":{
                 "StartAt": "ProcessTaskStep",
@@ -18,7 +19,22 @@
                     }
                 }
             },
-            "End":true
+            "Next":"ReduceIndicadores"
+        },
+        "ReduceIndicadores": {
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:us-east-1:123456789012:function:ReduceIndicadores",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "States.TaskFailed"
+                    ],
+                    "IntervalSeconds": 15,
+                    "MaxAttempts": 5,
+                    "BackoffRate": 1.5
+                }
+            ],
+            "End": true
         }
 
     }

@@ -49,4 +49,5 @@ function execute(type, dados) {
 
 }
 
+
 module.exports = { execute, executeAll, ExecutaTodosAlgosEmTodosSymbols };

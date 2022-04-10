@@ -17,4 +17,12 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["MapCalculaIndicadores"]
 
+[function_build_definitions.0838946e-4f06-4b7b-a631-a21c6922337c]
+codeuri = "C:\\Users\\rafae\\git\\obtemcota\\ReduceIndicadores"
+runtime = "nodejs14.x"
+architecture = "x86_64"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["ReduceIndicadores"]
+
 [layer_build_definitions]
