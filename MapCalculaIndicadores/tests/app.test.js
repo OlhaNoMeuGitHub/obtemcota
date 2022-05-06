@@ -1,5 +1,5 @@
 const scriptjs = require("../app");
-const handmock = require("./payload/CotacoesMetricas.json");
+const handmock = require("./payload/CotacoesemS3.json");
 
 describe("vailida transforma dados", function () {
   it("Executa Algos em todos symbols ", async () => {

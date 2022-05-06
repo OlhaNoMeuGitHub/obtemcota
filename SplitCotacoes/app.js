@@ -6,7 +6,8 @@ exports.lambdaHandler = async (event) => {
         console.log("SPLIT COTACOES Iniciado")
         console.log(typeof(event))
         event.cotacoes = await obtemArquivoOBJ.obtemArquivoS3(event.arquivo)
-        let result = await splitOBJ.splitAll(event)
+        let dados = await splitOBJ.splitAll(event)
+        let result = await splitOBJ.gravaMaps(dados);
         let resultString = JSON.stringify(result);
         console.log("Map quantidade: " + result.length)
         console.log("SPLIT COTACOES Finalizado")

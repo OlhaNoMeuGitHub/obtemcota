@@ -1,6 +1,6 @@
 
 
-
+const uploadArquivo = require('./uploadArquivo');
 
 function splitAll(event) {
   let novosdados = event.cotacoes;
@@ -76,5 +76,16 @@ function calculaQtdMaps(array,qtdmaxima,limitsize =200){
 
 }
 
+async function gravaMaps(dados){
 
-module.exports = { sliptinchunks,splitAll,logSizeInKilobytes,calculaQtdMaps};
+  let result = []
+  for (var i = 0; i < dados.length; i++) {
+    let file = await uploadArquivo.uploadS3(dados[i])
+    result.push(file)
+
+}
+return result
+}
+
+
+module.exports = { sliptinchunks,splitAll,logSizeInKilobytes,calculaQtdMaps,gravaMaps};

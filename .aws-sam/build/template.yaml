@@ -5,9 +5,30 @@ Description: 'obtemcota
   Sample SAM Template for obtemcota
 
   '
+Parameters:
+  ambiente:
+    Description: Ambiente
+    Type: String
+  APIKEY:
+    Description: api key
+    Type: String
+  APIURL:
+    Description: api url
+    Type: String
+  teste:
+    Description: api url
+    Type: String
 Globals:
   Function:
     Timeout: 30
+    Environment:
+      Variables:
+        NODE_ENV:
+          Ref: ambiente
+        API_KEY:
+          Ref: APIKEY
+        API_URL:
+          Ref: APIURL
 Resources:
   StockTradingStateMachine:
     Type: AWS::Serverless::StateMachine

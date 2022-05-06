@@ -1,8 +1,8 @@
 docker run \
   -p 9000:9000 \
   -p 9001:9001 \
-  -e "MINIO_ROOT_USER=teste" \
-  -e "MINIO_ROOT_PASSWORD=teste" \
+  -e "MINIO_ROOT_USER=AKIAVUGMUKIGD7N2QOVR" \
+  -e "MINIO_ROOT_PASSWORD=7Wx1lEJTelGv5KELa7AocyCXNCLAbFgVnpx4kgGz" \
   --name meus3 \
   quay.io/minio/minio server /data --console-address ":9001"
 
@@ -36,8 +36,8 @@ aws stepfunctions --endpoint http://localhost:8083 describe-execution --executio
 
 
 
-AWS_ACCESS_KEY_ID=teste
-AWS_SECRET_ACCESS_KEY=teste
+AWS_ACCESS_KEY_ID=AKIAVUGMUKIGD7N2QOVR
+AWS_SECRET_ACCESS_KEY=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
 LAMBDA_ENDPOINT=http://host.docker.internal:3001
 
 

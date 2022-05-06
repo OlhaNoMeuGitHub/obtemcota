@@ -6,7 +6,7 @@ describe("vailida transforma dados", function () {
     jest.setTimeout(30000);
 
     let event = {
-      arquivo:"1649203971684.json",
+      arquivo:"1649523907570.json",
       qtdMap:25
     }
     

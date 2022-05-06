@@ -4,7 +4,6 @@ var AWS = require("aws-sdk");
 AWS.config.update({ region: "us-east-1" });
 
 
-
 let paransS3 = {}
 if(process.env.NODE_ENV == "development" ){
 paransS3 = {
@@ -19,7 +18,8 @@ paransS3 = {
 const s3Aws = new AWS.S3(paransS3);
 
 
-async function obtemArquivoS3 (objectKey,s3SDK =  s3Aws, bucket = "teste") {
+
+async function obtemArquivoS3 (objectKey, bucket = "mapbucket") {
   try {
     const params = {
       Bucket: bucket,
@@ -35,5 +35,17 @@ async function obtemArquivoS3 (objectKey,s3SDK =  s3Aws, bucket = "teste") {
   }
 }
 
+async function obtemResultados(event){
 
-module.exports = { obtemArquivoS3 };
+  let result = []
+  for (var i = 0; i < event.length; i++) {
+    let arquivo = await obtemArquivoS3(event[i].Key);
+    result.push(arquivo);
+  }
+  return result;
+
+
+}
+
+
+module.exports = { obtemArquivoS3,obtemResultados };

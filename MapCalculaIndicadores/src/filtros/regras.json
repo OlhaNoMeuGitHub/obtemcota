@@ -1,0 +1,44 @@
+[
+    {
+      "condicoes": [
+        {
+          "condicao": {
+            "TipoDado": "MetricasCotacoes",
+            "symbol": "*",
+            "nomeParametro": "RSIclose14",
+            "operador": "Maior",
+            "valor": 80
+          }
+        }
+      ],
+      "nomeRegra": "RSI 14 maior que 80"
+    },
+    {
+        "condicoes": [
+          {
+            "condicao": {
+              "TipoDado": "MetricasCotacoes",
+              "symbol": "*",
+              "nomeParametro": "QtdNegativoSeguidos",
+              "operador": "Maior",
+              "valor": 5
+            }
+          }
+        ],
+        "nomeRegra": "Quantidade de Negativos maior que 5"
+      },
+      {
+        "condicoes": [
+          {
+            "condicao": {
+              "TipoDado": "MetricasCotacoes",
+              "symbol": "*",
+              "nomeParametro": "RSIclose14",
+              "operador": "Menor",
+              "valor": 20
+            }
+          }
+        ],
+        "nomeRegra": "RSI 14 menor que 20"
+      }
+  ]

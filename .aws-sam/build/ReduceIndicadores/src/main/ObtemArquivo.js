@@ -3,17 +3,23 @@
 var AWS = require("aws-sdk");
 AWS.config.update({ region: "us-east-1" });
 
-const s3Aws = new AWS.S3({
+
+let paransS3 = {}
+if(process.env.NODE_ENV == "development" ){
+paransS3 = {
   endpoint: "http://host.docker.internal:9000",
-  accessKeyId: "teste",
-  secretAccessKey: "teste",
+  accessKeyId: process.env.API_KEY,
+  secretAccessKey: process.env.API_URL,
   sslEnabled: false,
   s3ForcePathStyle: true,
   signatureVersion: 'v4'
-});
+}
+}
+const s3Aws = new AWS.S3(paransS3);
 
 
-async function obtemArquivoS3 (objectKey,s3SDK =  s3Aws, bucket = "teste") {
+
+async function obtemArquivoS3 (objectKey,s3SDK =  s3Aws, bucket = "mapbucket") {
   try {
     const params = {
       Bucket: bucket,
@@ -29,5 +35,17 @@ async function obtemArquivoS3 (objectKey,s3SDK =  s3Aws, bucket = "teste") {
   }
 }
 
+async function obtemResultados(event){
 
-module.exports = { obtemArquivoS3 };
+  let result = []
+  for (var i = 0; i < event.length; i++) {
+    let arquivo = await obtemArquivoS3(event[i].Key);
+    result.push(arquivo);
+  }
+  return result;
+
+
+}
+
+
+module.exports = { obtemArquivoS3,obtemResultados };

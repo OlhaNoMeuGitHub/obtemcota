@@ -4,12 +4,31 @@ Description: >
   obtemcota
 
   Sample SAM Template for obtemcota
+
+Parameters:
+    ambiente: # Changed this to remove underscore
+        Description: 'Ambiente'
+        Type: 'String'
+    APIKEY: # Changed this to remove underscore
+        Description: 'api key'
+        Type: 'String'
+    APIURL: # Changed this to remove underscore
+      Description: 'api url'
+      Type: 'String'
+    teste: # Changed this to remove underscore
+      Description: 'api url'
+      Type: 'String'
   
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 30
-
+    Environment:
+      Variables:
+        NODE_ENV: !Ref ambiente
+        API_KEY: !Ref APIKEY
+        API_URL: !Ref APIURL # Removed underscore from here as well, obviously
+    
 Resources:
 
   StockTradingStateMachine:
@@ -29,6 +48,8 @@ Resources:
       Runtime: nodejs14.x
       Architectures:
         - x86_64
+
+
 
   MapCalculaIndicadores:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
