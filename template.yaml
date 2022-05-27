@@ -5,8 +5,17 @@ Description: >
 
   Sample SAM Template for obtemcota
 
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: mapreducemachine
+    Description: mapreducemachine
+    Author: Rafael Barriento
+    HomePageUrl: https://github.com/OlhaNoMeuGitHub/obtemcota
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/OlhaNoMeuGitHub/obtemcota
+
 Parameters:
-    ambiente: # Changed this to remove underscore
+    AMBIENTE: # Changed this to remove underscore
         Description: 'Ambiente'
         Type: 'String'
     APIKEY: # Changed this to remove underscore
@@ -18,28 +27,56 @@ Parameters:
     teste: # Changed this to remove underscore
       Description: 'api url'
       Type: 'String'
-  
+    bucketCotacoes: # Changed this to remove underscore
+      Description: 'api url'
+      Type: 'String'
+    MAPBUCKET: # Changed this to remove underscore
+      Description: 'api url'
+      Type: 'String'
+    REDUCEBUCKET: # Changed this to remove underscore
+      Description: 'api url'
+      Type: 'String'
+    StateMachineURL: # Changed this to remove underscore
+      Description: 'api url'
+      Type: 'String'
+    ENDPOINTHOST: # Changed this to remove underscore
+      Description: 'api url'
+      Type: 'String'
+
+
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 30
     Environment:
       Variables:
-        NODE_ENV: !Ref ambiente
+        AMBIENTE: !Ref AMBIENTE
         API_KEY: !Ref APIKEY
-        API_URL: !Ref APIURL # Removed underscore from here as well, obviously
+        API_URL: !Ref APIURL
+        bucketCotacoes: !Ref bucketCotacoes
+        MAPBUCKET: !Ref MAPBUCKET
+        REDUCEBUCKET: !Ref REDUCEBUCKET
+        StateMachineURL: !Ref StateMachineURL
+        ENDPOINTHOST: !Ref ENDPOINTHOST
     
 Resources:
 
-  StockTradingStateMachine:
+  MapReduceStateMachine:
     Type: AWS::Serverless::StateMachine # More info about State Machine Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-statemachine.html
     Properties:
-      DefinitionUri: statemachine/stock_trader.asl.json
+      DefinitionUri: statemachine/statemachineMap.asl.json
+      DefinitionSubstitutions:
+        SplitCotacoesArn: !GetAtt SplitCotacoes.Arn
+        MapCalculaIndicadoresArn: !GetAtt MapCalculaIndicadores.Arn
+        ReduceIndicadoresArn: !GetAtt ReduceIndicadores.Arn
       Policies: # Find out more about SAM policy templates: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
         - LambdaInvokePolicy:
             FunctionName: !Ref SplitCotacoes
         - LambdaInvokePolicy:
             FunctionName: !Ref MapCalculaIndicadores
+        - LambdaInvokePolicy:
+            FunctionName: !Ref ReduceIndicadores
+      
   SplitCotacoes:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -49,8 +86,29 @@ Resources:
       Architectures:
         - x86_64
 
+  ObtemCotacao:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: Obtem-cotacao/source/
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Environment:
+        Variables: 
+          StateMachineURL: !GetAtt MapReduceStateMachine.Arn
+      Architectures:
+        - x86_64            
 
-
+  Cotacaoyahoo:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: cotacaoyahoo/source/
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Environment:
+        Variables: 
+          StateMachineURL: !GetAtt MapReduceStateMachine.Arn
+      Architectures:
+        - x86_64
   MapCalculaIndicadores:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -77,9 +135,9 @@ Outputs:
   # HelloWorldApi:
   #   Description: "API Gateway endpoint URL for Prod stage for Hello World function"
   #   Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/obtemcotacao/"
-  ObtemCotacaoFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
+  MapReduceStateMachineArn:
+    Description: "Stock Trading state machine ARN"
+    Value: !Ref MapReduceStateMachine
+  MapReduceStateMachineIamRole:
     Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+    Value: !GetAtt MapReduceStateMachineRole.Arn

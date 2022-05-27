@@ -5,6 +5,7 @@
 codeuri = "C:\\Users\\rafae\\git\\obtemcota\\SplitCotacoes"
 runtime = "nodejs14.x"
 architecture = "x86_64"
+handler = ""
 manifest_hash = ""
 packagetype = "Zip"
 functions = ["SplitCotacoes"]
@@ -13,6 +14,7 @@ functions = ["SplitCotacoes"]
 codeuri = "C:\\Users\\rafae\\git\\obtemcota\\MapCalculaIndicadores"
 runtime = "nodejs14.x"
 architecture = "x86_64"
+handler = ""
 manifest_hash = ""
 packagetype = "Zip"
 functions = ["MapCalculaIndicadores"]
@@ -21,8 +23,27 @@ functions = ["MapCalculaIndicadores"]
 codeuri = "C:\\Users\\rafae\\git\\obtemcota\\ReduceIndicadores"
 runtime = "nodejs14.x"
 architecture = "x86_64"
+handler = ""
 manifest_hash = ""
 packagetype = "Zip"
 functions = ["ReduceIndicadores"]
+
+[function_build_definitions.13570728-ffe5-4750-bea3-ab55c1fa3065]
+codeuri = "C:\\Users\\rafae\\git\\obtemcota\\Obtem-cotacao\\source"
+runtime = "nodejs14.x"
+architecture = "x86_64"
+handler = "app.lambdaHandler"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["ObtemCotacao"]
+
+[function_build_definitions.d1bd8e67-c68c-4e9d-a1ef-2e3e36e2442f]
+codeuri = "C:\\Users\\rafae\\git\\obtemcota\\cotacaoyahoo\\source"
+runtime = "nodejs14.x"
+architecture = "x86_64"
+handler = "app.lambdaHandler"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["Cotacaoyahoo"]
 
 [layer_build_definitions]

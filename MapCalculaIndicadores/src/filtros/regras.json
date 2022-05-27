@@ -33,6 +33,20 @@
             "condicao": {
               "TipoDado": "MetricasCotacoes",
               "symbol": "*",
+              "nomeParametro": "QtdNegativoSeguidos",
+              "operador": "Maior",
+              "valor": 1
+            }
+          }
+        ],
+        "nomeRegra": "Quantidade de Negativos maior que 2"
+      },
+      {
+        "condicoes": [
+          {
+            "condicao": {
+              "TipoDado": "MetricasCotacoes",
+              "symbol": "*",
               "nomeParametro": "RSIclose14",
               "operador": "Menor",
               "valor": 20

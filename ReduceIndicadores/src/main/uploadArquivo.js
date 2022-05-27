@@ -1,36 +1,39 @@
 // import { S3 } from "aws-sdk";
 
 var AWS = require("aws-sdk");
-AWS.config.update({ region: "us-east-1" });
 
 
 
-let paransS3 = {}
-if(process.env.NODE_ENV == "development" ){
-paransS3 = {
-  endpoint: "http://host.docker.internal:9000",
-  accessKeyId: process.env.API_KEY,
-  secretAccessKey: process.env.API_URL,
-  sslEnabled: false,
-  s3ForcePathStyle: true,
-  signatureVersion: 'v4'
+function getSDK(){
+  let paransS3 = {}
+  if(process.env.AMBIENTE == "development" ){
+  paransS3 = {
+    endpoint: process.env.ENDPOINTHOST+":9000",
+    accessKeyId: process.env.API_KEY,
+    secretAccessKey: process.env.API_URL,
+    sslEnabled: false,
+    s3ForcePathStyle: true,
+    signatureVersion: 'v4'
+  }
+  console.log("AMBIENTE DEV")
+  }
+  return  s3Aws = new AWS.S3(paransS3);
 }
-}
-const s3Aws = new AWS.S3(paransS3);
 
-
-async function uploadS3(objUpload, s3SDK = s3Aws) {
+async function uploadS3(objUpload, SdkFunc = getSDK) {
+  console.log(process.env.AMBIENTE == "development" )
+  s3SDK = SdkFunc()
   jsonString = JSON.stringify(objUpload);
   var date = Date.now();
   keyfile = date + ".json"
   const params = {
-    Bucket: "reducebucket",
+    Bucket: process.env.REDUCEBUCKET,
     Key: keyfile,
     Body: jsonString,
   };
 
   let result = {
-    Bucket: "reducebucket",
+    Bucket: process.env.REDUCEBUCKET,
     Key: keyfile
   };
   try {

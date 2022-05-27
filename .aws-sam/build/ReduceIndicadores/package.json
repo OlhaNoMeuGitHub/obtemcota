@@ -18,6 +18,7 @@
   "homepage": "https://github.com/OlhaNoMeuGitHub/obtemcota#readme",
   "devDependencies": {
     "babel-plugin-rewire": "^1.2.0",
+    "aws-sdk": "^2.1050.0",
     "jest": "^22.4.4"
   },
   "jest": {
@@ -26,7 +27,6 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "aws-sdk": "^2.1050.0",
     "technicalindicators": "^3.1.0",
     "yahoo-finance2": "^2.1.0"
   }

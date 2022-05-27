@@ -1,6 +1,6 @@
 
-const app = require('../app.js');
-
+const app = require('../source/app');
+require('dotenv').config()
 
 
 describe('vailida envio handler', function () {
@@ -9,7 +9,12 @@ describe('vailida envio handler', function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
     })
-
+    it('Valida ambiente', async () => {
+            
+            console.log(process.env.MAPBUCKET)
+            expect(process.env.MAPBUCKET).toBe("mapbucket");
+            expect(process.env.bucketCotacoes).toBe("cotacoesmapreduce");
+    })
     it('Valida handler com historico', async () => {
 
         let event = {

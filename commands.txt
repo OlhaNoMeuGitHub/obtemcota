@@ -69,7 +69,7 @@ aws stepfunctions --endpoint http://localhost:8083  list-state-machines
 
 
 passo 1
-sam local start-lambda --host 127.0.0.1 -p 3001
+sam local start-lambda --host 127.0.0.1 -p 3001 -n env.json
 
 passo 2
 docker run -p 8083:8083 --env-file env-docker.txt amazon/aws-stepfunctions-local --name StepFunction
@@ -94,3 +94,8 @@ aws stepfunctions describe-state-machine-for-execution --endpoint http://localho
 aws stepfunctions describe-execution --endpoint http://localhost:8083 --execution-arn "arn:aws:states:us-east-1:123456789012:execution:machineMap:12ba5d2f-f813-4fd5-accc-1fdab2277abd" 
 
 aws stepfunctions list-activities --endpoint http://localhost:8083
+
+
+sam publish --template packaged.yaml --region us-east-2   
+
+sam deploy --template-file C:\Users\rafae\git\obtemcota\packaged.yaml --stack-name mapreducemachine -g

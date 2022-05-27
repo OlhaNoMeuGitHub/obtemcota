@@ -117,7 +117,7 @@ function entre(valorA, valorB) {
 }
 
 async function getRegras() {
-  return await obterArquivo.obtemArquivoS3("regras.json","configbucket")
+  return await obterArquivo.obtemArquivoS3("regras.json","configbucketmapreduce")
 }
 
 module.exports = {

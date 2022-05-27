@@ -1,31 +1,33 @@
 // import { S3 } from "aws-sdk";
 
 var AWS = require("aws-sdk");
-AWS.config.update({ region: "us-east-1" });
 
 
 
-let paransS3 = {}
-if(process.env.NODE_ENV == "development" ){
-paransS3 = {
-  endpoint: "http://host.docker.internal:9000",
-  accessKeyId: process.env.API_KEY,
-  secretAccessKey: process.env.API_URL,
-  sslEnabled: false,
-  s3ForcePathStyle: true,
-  signatureVersion: 'v4'
+function getSDK(){
+  let paransS3 = {}
+  if(process.env.AMBIENTE == "development" ){
+  paransS3 = {
+    endpoint: process.env.ENDPOINTHOST+":9000",
+    accessKeyId: process.env.API_KEY,
+    secretAccessKey: process.env.API_URL,
+    sslEnabled: false,
+    s3ForcePathStyle: true,
+    signatureVersion: 'v4'
+  }
+  console.log("AMBIENTE DEV");
+  console.log(paransS3)
+  }
+  return  s3Aws = new AWS.S3(paransS3);
 }
-}
-const s3Aws = new AWS.S3(paransS3);
 
 
-async function obtemArquivoS3 (objectKey,s3SDK =  s3Aws, bucket = "teste") {
+async function obtemArquivoS3 (objectKey, SdkFunc = getSDK, bucket = "cotacoesmapreduce") {
   try {
-    const params = {
-      Bucket: bucket,
-      Key: objectKey 
-    }
-
+    const params = montaparans(objectKey) ;
+    console.log(params)
+    console.log(process.env.AMBIENTE == "development" )
+    s3SDK = SdkFunc();
     const data = await s3Aws.getObject(params).promise();
 
     jsonRetorno=  JSON.parse(data.Body.toString('utf-8'));
@@ -35,5 +37,22 @@ async function obtemArquivoS3 (objectKey,s3SDK =  s3Aws, bucket = "teste") {
   }
 }
 
+function montaparans(objectKey){
+  try{
+    let bucket = process.env.bucketCotacoes
+    console.log("teste " + bucket)
+    if(bucket == undefined) {throw new Error("Nao foi possivel obter variavel de ambiente")}
+    const params = {
+      Bucket: bucket,
+      Key: objectKey 
+    }
+    return params;
 
-module.exports = { obtemArquivoS3 };
+  } catch (e) {
+    throw new Error(`Erro ao obter parametro: ${e}`)
+  }
+
+
+}
+
+module.exports = { obtemArquivoS3 ,montaparans};

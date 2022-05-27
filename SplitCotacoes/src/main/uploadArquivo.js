@@ -1,35 +1,42 @@
 // import { S3 } from "aws-sdk";
 
 var AWS = require("aws-sdk");
-AWS.config.update({ region: "us-east-1" });
 
 
 
-let paransS3 = {}
-if(process.env.NODE_ENV == "development" ){
-paransS3 = {
-  endpoint: "http://host.docker.internal:9000",
-  accessKeyId: process.env.API_KEY,
-  secretAccessKey: process.env.API_URL,
-  sslEnabled: false,
-  s3ForcePathStyle: true,
-  signatureVersion: 'v4'
+
+
+function getSDK(){
+  let paransS3 = {}
+  if(process.env.AMBIENTE == "development" ){
+  paransS3 = {
+    endpoint: process.env.ENDPOINTHOST+":9000",
+    accessKeyId: process.env.API_KEY,
+    secretAccessKey: process.env.API_URL,
+    sslEnabled: false,
+    s3ForcePathStyle: true,
+    signatureVersion: 'v4'
+  }
+  console.log("AMBIENTE DEV")
+  }
+  return  s3Aws = new AWS.S3(paransS3);
 }
-}
-const s3Aws = new AWS.S3(paransS3);
 
-async function uploadS3(objUpload, s3SDK = s3Aws) {
+
+async function uploadS3(objUpload,  SdkFunc = getSDK) {
   jsonString = JSON.stringify(objUpload);
+  console.log(process.env.AMBIENTE == "development" )
+  s3SDK = SdkFunc()
   var date = Date.now();
   keyfile = date + ".json"
   const params = {
-    Bucket: "mapbucket",
+    Bucket: process.env.MAPBUCKET,
     Key: keyfile,
     Body: jsonString,
   };
 
   let result = {
-    Bucket: "mapbucket",
+    Bucket: process.env.MAPBUCKET,
     Key: keyfile
   };
   try {
@@ -42,4 +49,4 @@ async function uploadS3(objUpload, s3SDK = s3Aws) {
 }
 
 
-module.exports = { uploadS3 };
+module.exports = { uploadS3 ,getSDK};

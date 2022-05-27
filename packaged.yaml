@@ -1,0 +1,112 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'obtemcota
+
+  Sample SAM Template for obtemcota
+
+  '
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: mapreducemachine
+    Description: mapreducemachine
+    Author: Rafael Barriento
+    HomePageUrl: https://github.com/OlhaNoMeuGitHub/obtemcota
+    SemanticVersion: '0.0.1'
+    SourceCodeUrl: https://github.com/OlhaNoMeuGitHub/obtemcota
+Parameters:
+  ambiente:
+    Description: Ambiente
+    Type: String
+  APIKEY:
+    Description: api key
+    Type: String
+  APIURL:
+    Description: api url
+    Type: String
+  teste:
+    Description: api url
+    Type: String
+Globals:
+  Function:
+    Timeout: 30
+    Environment:
+      Variables:
+        NODE_ENV:
+          Ref: ambiente
+        API_KEY:
+          Ref: APIKEY
+        API_URL:
+          Ref: APIURL
+Resources:
+  MapReduceStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      DefinitionUri:
+        Bucket: mapreducemachinebucket
+        Key: 62a96846ca8b2a8f85999c2435501b2d
+      DefinitionSubstitutions:
+        SplitCotacoesArn:
+          Fn::GetAtt:
+          - SplitCotacoes
+          - Arn
+        MapCalculaIndicadoresArn:
+          Fn::GetAtt:
+          - MapCalculaIndicadores
+          - Arn
+        ReduceIndicadoresArn:
+          Fn::GetAtt:
+          - ReduceIndicadores
+          - Arn
+      Policies:
+      - LambdaInvokePolicy:
+          FunctionName:
+            Ref: SplitCotacoes
+      - LambdaInvokePolicy:
+          FunctionName:
+            Ref: MapCalculaIndicadores
+      - LambdaInvokePolicy:
+          FunctionName:
+            Ref: ReduceIndicadores
+    Metadata:
+      SamResourceId: MapReduceStateMachine
+  SplitCotacoes:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://mapreducemachinebucket/94ddd25ee1067ed33b1b5863d2fb87d4
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Architectures:
+      - x86_64
+    Metadata:
+      SamResourceId: SplitCotacoes
+  MapCalculaIndicadores:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://mapreducemachinebucket/b65645360f0b8b662f28fd981626ef20
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Architectures:
+      - x86_64
+    Metadata:
+      SamResourceId: MapCalculaIndicadores
+  ReduceIndicadores:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://mapreducemachinebucket/1d6d89382724fdda64466c51c2e64b89
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Architectures:
+      - x86_64
+    Metadata:
+      SamResourceId: ReduceIndicadores
+Outputs:
+  MapReduceStateMachineArn:
+    Description: Stock Trading state machine ARN
+    Value:
+      Ref: MapReduceStateMachine
+  MapReduceStateMachineIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - MapReduceStateMachineRole
+      - Arn

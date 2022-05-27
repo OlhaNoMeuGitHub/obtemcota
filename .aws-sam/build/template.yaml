@@ -5,8 +5,16 @@ Description: 'obtemcota
   Sample SAM Template for obtemcota
 
   '
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: mapreducemachine
+    Description: mapreducemachine
+    Author: Rafael Barriento
+    HomePageUrl: https://github.com/OlhaNoMeuGitHub/obtemcota
+    SemanticVersion: '0.0.1'
+    SourceCodeUrl: https://github.com/OlhaNoMeuGitHub/obtemcota
 Parameters:
-  ambiente:
+  AMBIENTE:
     Description: Ambiente
     Type: String
   APIKEY:
@@ -18,22 +26,60 @@ Parameters:
   teste:
     Description: api url
     Type: String
+  bucketCotacoes:
+    Description: api url
+    Type: String
+  MAPBUCKET:
+    Description: api url
+    Type: String
+  REDUCEBUCKET:
+    Description: api url
+    Type: String
+  StateMachineURL:
+    Description: api url
+    Type: String
+  ENDPOINTHOST:
+    Description: api url
+    Type: String
 Globals:
   Function:
     Timeout: 30
     Environment:
       Variables:
-        NODE_ENV:
-          Ref: ambiente
+        AMBIENTE:
+          Ref: AMBIENTE
         API_KEY:
           Ref: APIKEY
         API_URL:
           Ref: APIURL
+        bucketCotacoes:
+          Ref: bucketCotacoes
+        MAPBUCKET:
+          Ref: MAPBUCKET
+        REDUCEBUCKET:
+          Ref: REDUCEBUCKET
+        StateMachineURL:
+          Ref: StateMachineURL
+        ENDPOINTHOST:
+          Ref: ENDPOINTHOST
 Resources:
-  StockTradingStateMachine:
+  MapReduceStateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
-      DefinitionUri: ..\..\statemachine\stock_trader.asl.json
+      DefinitionUri: ..\..\statemachine\statemachineMap.asl.json
+      DefinitionSubstitutions:
+        SplitCotacoesArn:
+          Fn::GetAtt:
+          - SplitCotacoes
+          - Arn
+        MapCalculaIndicadoresArn:
+          Fn::GetAtt:
+          - MapCalculaIndicadores
+          - Arn
+        ReduceIndicadoresArn:
+          Fn::GetAtt:
+          - ReduceIndicadores
+          - Arn
       Policies:
       - LambdaInvokePolicy:
           FunctionName:
@@ -41,6 +87,9 @@ Resources:
       - LambdaInvokePolicy:
           FunctionName:
             Ref: MapCalculaIndicadores
+      - LambdaInvokePolicy:
+          FunctionName:
+            Ref: ReduceIndicadores
   SplitCotacoes:
     Type: AWS::Serverless::Function
     Properties:
@@ -51,6 +100,38 @@ Resources:
       - x86_64
     Metadata:
       SamResourceId: SplitCotacoes
+  ObtemCotacao:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ObtemCotacao
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Environment:
+        Variables:
+          StateMachineURL:
+            Fn::GetAtt:
+            - MapReduceStateMachine
+            - Arn
+      Architectures:
+      - x86_64
+    Metadata:
+      SamResourceId: ObtemCotacao
+  Cotacaoyahoo:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: Cotacaoyahoo
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Environment:
+        Variables:
+          StateMachineURL:
+            Fn::GetAtt:
+            - MapReduceStateMachine
+            - Arn
+      Architectures:
+      - x86_64
+    Metadata:
+      SamResourceId: Cotacaoyahoo
   MapCalculaIndicadores:
     Type: AWS::Serverless::Function
     Properties:
@@ -72,15 +153,13 @@ Resources:
     Metadata:
       SamResourceId: ReduceIndicadores
 Outputs:
-  ObtemCotacaoFunction:
-    Description: Hello World Lambda Function ARN
+  MapReduceStateMachineArn:
+    Description: Stock Trading state machine ARN
     Value:
-      Fn::GetAtt:
-      - HelloWorldFunction
-      - Arn
-  HelloWorldFunctionIamRole:
+      Ref: MapReduceStateMachine
+  MapReduceStateMachineIamRole:
     Description: Implicit IAM Role created for Hello World function
     Value:
       Fn::GetAtt:
-      - HelloWorldFunctionRole
+      - MapReduceStateMachineRole
       - Arn
